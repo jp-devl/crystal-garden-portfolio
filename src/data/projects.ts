@@ -46,7 +46,7 @@ export function mapRepos(repos: GitHubRepo[]): Project[] {
     url: r.html_url,
     language: r.language,
     stars: r.stargazers_count,
-    color: PALETTE[i % PALETTE.length],
+    color: PALETTE[i % PALETTE.length] ?? "#58a6ff",
     position: positionFor(i, visible.length),
   }));
 }
