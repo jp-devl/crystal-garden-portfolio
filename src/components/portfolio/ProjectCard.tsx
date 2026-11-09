@@ -14,7 +14,14 @@ export function ProjectCard({ project, onClose }: ProjectCardProps) {
           <div>
             <span className="mb-2 block h-1 w-10 rounded-full" style={{ backgroundColor: project.color }} />
             <h2 className="font-mono text-xl font-semibold text-foreground">{project.name}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{project.description}</p>
+            <p className="mt-2 line-clamp-4 text-sm text-muted-foreground">{project.description}</p>
+            {(project.language || project.stars > 0) && (
+              <p className="mt-2 font-mono text-xs text-muted-foreground">
+                {project.language}
+                {project.language && project.stars > 0 && " · "}
+                {project.stars > 0 && `★ ${project.stars}`}
+              </p>
+            )}
           </div>
           <button onClick={onClose} aria-label="Fechar" className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground">
             <X className="h-5 w-5" />
