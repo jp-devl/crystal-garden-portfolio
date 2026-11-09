@@ -26,15 +26,30 @@ interface GitHubRepo {
 
 const PALETTE = ["#58a6ff", "#3fb950", "#d29922", "#f78166", "#bc8cff", "#39c5cf", "#ff7b72", "#e3b341"];
 
-/** Distribui os cristais em um anel com alturas alternadas; o raio cresce com a quantidade. */
-export function layoutRadius(count: number) {
-  return Math.max(3.5, count * 0.42);
+const SPACING = 2.6;
+
+function columnsFor(count: number) {
+  return Math.min(6, Math.max(1, Math.ceil(Math.sqrt(count * 1.6))));
 }
 
+/** Meia-largura/altura aproximada da grade, usada para posicionar a câmera. */
+export function layoutRadius(count: number) {
+  const cols = columnsFor(count);
+  const rows = Math.ceil(count / cols);
+  return Math.max(3.5, (Math.max(cols, rows * 1.6) * SPACING) / 2);
+}
+
+/** Distribui os cristais em uma grade centralizada, com leve variação de profundidade. */
 function positionFor(i: number, count: number): [number, number, number] {
-  const r = layoutRadius(count);
-  const angle = (i / Math.max(count, 1)) * Math.PI * 2;
-  return [Math.sin(angle) * r, (i % 2 === 0 ? 0.5 : -0.5), Math.cos(angle) * r];
+  const cols = columnsFor(count);
+  const rows = Math.ceil(count / cols);
+  const row = Math.floor(i / cols);
+  const inRow = row === rows - 1 ? count - row * cols : cols;
+  const col = i % cols;
+  const x = (col - (inRow - 1) / 2) * SPACING;
+  const y = ((rows - 1) / 2 - row) * SPACING * 0.85;
+  const z = ((i * 37) % 5) * 0.25 - 0.5;
+  return [x, y, z];
 }
 
 export function mapRepos(repos: GitHubRepo[]): Project[] {
