@@ -1,23 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { PortfolioScene } from "@/components/portfolio/PortfolioScene";
+import { ProjectCard } from "@/components/portfolio/ProjectCard";
+import type { Project } from "@/data/projects";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Portfólio 3D — Projetos GitHub" },
+      { name: "description", content: "Portfólio 3D interativo com cristais que representam projetos do GitHub." },
+      { property: "og:title", content: "Portfólio 3D — Projetos GitHub" },
+      { property: "og:description", content: "Explore projetos do GitHub em uma cena 3D interativa." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [selected, setSelected] = useState<Project | null>(null);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="relative h-screen w-full overflow-hidden bg-background">
+      <div className="absolute inset-0">
+        <PortfolioScene selectedId={selected?.id ?? null} onSelect={setSelected} onClear={() => setSelected(null)} />
+      </div>
+      <header className="pointer-events-none absolute left-0 top-0 z-10 p-8">
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary">Portfólio</p>
+        <h1 className="mt-2 text-3xl font-semibold text-foreground md:text-5xl">Projetos em 3D</h1>
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">Arraste para girar a cena. Clique em um cristal para ver o projeto.</p>
+      </header>
+      {selected && <ProjectCard project={selected} onClose={() => setSelected(null)} />}
+    </main>
   );
 }
