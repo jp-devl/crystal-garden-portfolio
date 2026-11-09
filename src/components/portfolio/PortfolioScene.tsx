@@ -1,19 +1,21 @@
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, OrbitControls, Stars } from "@react-three/drei";
-import { projects, type Project } from "@/data/projects";
+import { layoutRadius, type Project } from "@/data/projects";
 import { Crystal } from "./Crystal";
 
 interface PortfolioSceneProps {
+  projects: Project[];
   selectedId: string | null;
   onSelect: (project: Project) => void;
   onClear: () => void;
 }
 
-export function PortfolioScene({ selectedId, onSelect, onClear }: PortfolioSceneProps) {
+export function PortfolioScene({ projects, selectedId, onSelect, onClear }: PortfolioSceneProps) {
+  const dist = layoutRadius(projects.length) * 2 + 3;
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 1.5, 8], fov: 50 }}
+      camera={{ position: [0, 0.5, dist], fov: 50 }}
       onPointerMissed={onClear}
       onCreated={({ gl }) => gl.domElement.parentElement?.setAttribute("data-scene-ready", "")}
     >
@@ -37,7 +39,7 @@ export function PortfolioScene({ selectedId, onSelect, onClear }: PortfolioScene
         <Crystal key={p.id} project={p} index={i} selected={selectedId === p.id} onSelect={onSelect} />
       ))}
 
-      <ContactShadows position={[0, -1.8, 0]} opacity={0.5} scale={16} blur={2.4} far={4} />
+      <ContactShadows position={[0, -layoutRadius(projects.length) * 0.75 - 1, 0]} opacity={0.5} scale={16} blur={2.4} far={4} />
       <OrbitControls enableDamping dampingFactor={0.06} minDistance={4} maxDistance={14} enablePan={false} />
     </Canvas>
   );
