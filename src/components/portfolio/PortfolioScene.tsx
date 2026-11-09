@@ -11,7 +11,7 @@ interface PortfolioSceneProps {
 }
 
 export function PortfolioScene({ projects, selectedId, onSelect, onClear }: PortfolioSceneProps) {
-  const dist = layoutRadius(projects.length) * 2 + 3;
+  const dist = layoutRadius(projects.length) * 2.3 + 4;
   return (
     <Canvas
       shadows

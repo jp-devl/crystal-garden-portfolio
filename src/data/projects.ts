@@ -10,6 +10,7 @@ export interface Project {
   language: string | null;
   stars: number;
   color: string;
+  coverUrl: string;
   position: [number, number, number];
 }
 
@@ -22,11 +23,12 @@ interface GitHubRepo {
   stargazers_count: number;
   fork: boolean;
   private: boolean;
+  default_branch: string;
 }
 
 const PALETTE = ["#58a6ff", "#3fb950", "#d29922", "#f78166", "#bc8cff", "#39c5cf", "#ff7b72", "#e3b341"];
 
-const SPACING = 2.6;
+const SPACING = 3.2;
 
 function columnsFor(count: number) {
   return Math.min(6, Math.max(1, Math.ceil(Math.sqrt(count * 1.6))));
@@ -52,6 +54,11 @@ function positionFor(i: number, count: number): [number, number, number] {
   return [x, y, z];
 }
 
+/** Capa na raiz do repo: [nome-do-repositorio]-capa.png */
+export function coverUrlFor(repo: string, branch = "main", user: string = GITHUB_USERNAME) {
+  return `https://raw.githubusercontent.com/${user}/${repo}/${branch || "main"}/${repo}-capa.png`;
+}
+
 export function mapRepos(repos: GitHubRepo[]): Project[] {
   const visible = repos.filter((r) => !r.private && !r.fork);
   return visible.map((r, i) => ({
@@ -59,6 +66,7 @@ export function mapRepos(repos: GitHubRepo[]): Project[] {
     name: r.name,
     description: r.description?.trim() || DEFAULT_DESCRIPTION,
     url: r.html_url,
+    coverUrl: coverUrlFor(r.name, r.default_branch),
     language: r.language,
     stars: r.stargazers_count,
     color: PALETTE[i % PALETTE.length] ?? "#58a6ff",
