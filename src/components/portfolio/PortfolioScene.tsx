@@ -1,19 +1,21 @@
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, OrbitControls, Stars } from "@react-three/drei";
-import { projects, type Project } from "@/data/projects";
+import { layoutRadius, type Project } from "@/data/projects";
 import { Crystal } from "./Crystal";
 
 interface PortfolioSceneProps {
+  projects: Project[];
   selectedId: string | null;
   onSelect: (project: Project) => void;
   onClear: () => void;
 }
 
-export function PortfolioScene({ selectedId, onSelect, onClear }: PortfolioSceneProps) {
+export function PortfolioScene({ projects, selectedId, onSelect, onClear }: PortfolioSceneProps) {
+  const dist = layoutRadius(projects.length) * 2.2 + 2;
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 1.5, 8], fov: 50 }}
+      camera={{ position: [0, dist * 0.35, dist], fov: 50 }}
       onPointerMissed={onClear}
       onCreated={({ gl }) => gl.domElement.parentElement?.setAttribute("data-scene-ready", "")}
     >
