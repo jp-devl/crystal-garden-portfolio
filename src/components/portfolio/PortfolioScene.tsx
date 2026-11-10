@@ -1,7 +1,29 @@
-import { Canvas } from "@react-three/fiber";
+import { useLayoutEffect, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, OrbitControls, Stars } from "@react-three/drei";
 import { layoutRadius, type Project } from "@/data/projects";
 import { Crystal } from "./Crystal";
+import { PANEL_H, PANEL_W } from "./useCoverTexture";
+
+function FittedCamera({ projects }: { projects: Project[] }) {
+  const { camera, size, invalidate } = useThree();
+  const [distance, setDistance] = useState(30);
+
+  useLayoutEffect(() => {
+    const halfWidth = Math.max(...projects.map((p) => Math.abs(p.position[0]))) + PANEL_W * 0.75;
+    const halfHeight = Math.max(...projects.map((p) => Math.abs(p.position[1]))) + PANEL_H * 0.75 + 0.25;
+    const tangent = Math.tan((50 * Math.PI) / 360);
+    const aspect = size.width / Math.max(1, size.height);
+    const fitted = Math.max(halfHeight / tangent, halfWidth / (tangent * aspect)) * 1.12 + 1;
+    camera.position.set(0, 0, fitted);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+    setDistance(fitted);
+    invalidate();
+  }, [camera, size.width, size.height, projects, invalidate]);
+
+  return <OrbitControls enableDamping dampingFactor={0.06} minDistance={4} maxDistance={distance * 2} enablePan={false} />;
+}
 
 interface PortfolioSceneProps {
   projects: Project[];
@@ -11,16 +33,14 @@ interface PortfolioSceneProps {
 }
 
 export function PortfolioScene({ projects, selectedId, onSelect, onClear }: PortfolioSceneProps) {
-  const dist = layoutRadius(projects.length) * 2.3 + 4;
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 0.5, dist], fov: 50 }}
+      camera={{ position: [0, 0, 30], fov: 50 }}
       onPointerMissed={onClear}
       onCreated={({ gl }) => gl.domElement.parentElement?.setAttribute("data-scene-ready", "")}
     >
       <color attach="background" args={["#0d1117"]} />
-      <fog attach="fog" args={["#0d1117", 10, 22]} />
       <ambientLight intensity={0.35} />
       <directionalLight
         position={[5, 8, 5]}
@@ -40,7 +60,7 @@ export function PortfolioScene({ projects, selectedId, onSelect, onClear }: Port
       ))}
 
       <ContactShadows position={[0, -layoutRadius(projects.length) * 0.75 - 1, 0]} opacity={0.5} scale={16} blur={2.4} far={4} />
-      <OrbitControls enableDamping dampingFactor={0.06} minDistance={4} maxDistance={14} enablePan={false} />
+      <FittedCamera projects={projects} />
     </Canvas>
   );
 }

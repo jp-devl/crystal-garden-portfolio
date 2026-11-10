@@ -30,7 +30,7 @@ function Index() {
 
   return (
     <main className="relative h-screen w-full overflow-hidden bg-background">
-      <div className="absolute inset-0">
+      <div className="absolute inset-x-0 bottom-0 top-40 md:top-44">
         {projects.length > 0 && (
           <PortfolioScene
             key={projects.length}
