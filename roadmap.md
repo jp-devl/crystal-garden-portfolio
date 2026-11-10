@@ -1,5 +1,5 @@
 # Remaining portfolio checks
 
-- [ ] Correct panel framing on desktop and mobile.
-- [ ] Verify real repository selection, cover loading and missing-cover fallback.
-- [ ] Run regression tests and check page metadata.
+- [x] Correct panel framing on desktop and mobile.
+- [x] Verify real repository selection, cover loading (simulated successful image) and missing-cover fallback (real GitHub 404 responses).
+- [x] Run regression tests and check page metadata.
