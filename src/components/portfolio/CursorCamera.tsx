@@ -41,7 +41,7 @@ export function CursorCamera({ projects }: { projects: Project[] }) {
       camera.updateMatrixWorld();
       scene.updateMatrixWorld(true);
       tools.ray.setFromCamera(tools.mouse, camera);
-      const panels = scene.children.filter((object) => object.userData.projectPanel);
+      const panels = scene.children.filter((object) => object.userData['projectPanel']);
       const hit = tools.ray.intersectObjects(panels, true)[0];
       if (hit) tools.anchor.copy(hit.point);
       else {
