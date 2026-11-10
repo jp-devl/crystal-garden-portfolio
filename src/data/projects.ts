@@ -1,5 +1,7 @@
 // Configuração: troque aqui o usuário do GitHub exibido no portfólio.
 export const GITHUB_USERNAME = "jp-devl";
+// Altere somente esta linha para usar "public", "images" ou outra pasta.
+export const ASSETS_FOLDER = "assets";
 export const DEFAULT_DESCRIPTION = "Projeto desenvolvido por João Pedro";
 
 export interface Project {
@@ -54,9 +56,9 @@ function positionFor(i: number, count: number): [number, number, number] {
   return [x, y, z];
 }
 
-/** Capa na raiz do repo: [nome-do-repositorio]-capa.png */
+/** Capa dentro de ASSETS_FOLDER: [nome-do-repositorio]-capa.png */
 export function coverUrlFor(repo: string, branch = "main", user: string = GITHUB_USERNAME) {
-  return `https://raw.githubusercontent.com/${user}/${repo}/${branch || "main"}/${repo}-capa.png`;
+  return `https://raw.githubusercontent.com/${user}/${repo}/${branch || "main"}/${ASSETS_FOLDER}/${repo}-capa.png`;
 }
 
 export function mapRepos(repos: GitHubRepo[]): Project[] {

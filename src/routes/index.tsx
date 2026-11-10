@@ -10,7 +10,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Portfólio 3D — Projetos GitHub" },
-      { name: "description", content: "Portfólio 3D interativo com cristais que representam projetos do GitHub." },
+      { name: "description", content: "Portfólio 3D interativo com painéis que representam projetos do GitHub." },
       { property: "og:title", content: "Portfólio 3D — Projetos GitHub" },
       { property: "og:description", content: "Explore projetos do GitHub em uma cena 3D interativa." },
       { property: "og:type", content: "website" },
@@ -46,8 +46,8 @@ function Index() {
         <h1 className="mt-2 text-3xl font-semibold text-foreground md:text-5xl">Projetos em 3D</h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
           {projects.length > 0
-            ? `${projects.length} repositórios. Arraste para girar, clique em um cristal.`
-            : "Arraste para girar a cena. Clique em um cristal para ver o projeto."}
+            ? `${projects.length} repositórios. Arraste para girar, clique em um painel.`
+            : "Arraste para girar a cena. Clique em um painel para ver o projeto."}
         </p>
       </header>
 

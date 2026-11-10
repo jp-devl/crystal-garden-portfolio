@@ -1,29 +1,8 @@
-import { useLayoutEffect, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer, OrbitControls, Stars } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { ContactShadows, Environment, Lightformer, Stars } from "@react-three/drei";
 import { layoutRadius, type Project } from "@/data/projects";
 import { Crystal } from "./Crystal";
-import { PANEL_H, PANEL_W } from "./useCoverTexture";
-
-function FittedCamera({ projects }: { projects: Project[] }) {
-  const { camera, size, invalidate } = useThree();
-  const [distance, setDistance] = useState(30);
-
-  useLayoutEffect(() => {
-    const halfWidth = Math.max(...projects.map((p) => Math.abs(p.position[0]))) + PANEL_W * 0.75;
-    const halfHeight = Math.max(...projects.map((p) => Math.abs(p.position[1]))) + PANEL_H * 0.75 + 0.25;
-    const tangent = Math.tan((50 * Math.PI) / 360);
-    const aspect = size.width / Math.max(1, size.height);
-    const fitted = Math.max(halfHeight / tangent, halfWidth / (tangent * aspect)) * 1.12 + 1;
-    camera.position.set(0, 0, fitted);
-    camera.lookAt(0, 0, 0);
-    camera.updateProjectionMatrix();
-    setDistance(fitted);
-    invalidate();
-  }, [camera, size.width, size.height, projects, invalidate]);
-
-  return <OrbitControls enableDamping dampingFactor={0.06} minDistance={4} maxDistance={distance * 2} enablePan={false} />;
-}
+import { CursorCamera } from "./CursorCamera";
 
 interface PortfolioSceneProps {
   projects: Project[];
@@ -60,7 +39,7 @@ export function PortfolioScene({ projects, selectedId, onSelect, onClear }: Port
       ))}
 
       <ContactShadows position={[0, -layoutRadius(projects.length) * 0.75 - 1, 0]} opacity={0.5} scale={16} blur={2.4} far={4} />
-      <FittedCamera projects={projects} />
+      <CursorCamera projects={projects} />
     </Canvas>
   );
 }

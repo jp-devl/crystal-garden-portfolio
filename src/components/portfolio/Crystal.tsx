@@ -43,6 +43,7 @@ export function Crystal({ project, index, selected, onSelect }: ProjectPanelProp
   return (
     <group
       ref={ref}
+      userData={{ projectPanel: true }}
       position={[baseX, baseY, baseZ]}
       onClick={handleClick}
       onPointerOver={(e) => {
