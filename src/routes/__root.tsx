@@ -81,14 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "João Pedro — Portfólio 3D" },
+      { name: "description", content: "Explore os projetos de João Pedro em um portfólio 3D interativo conectado ao GitHub." },
+      { name: "author", content: "João Pedro Moreira Martins de Sousa" },
+      { property: "og:title", content: "João Pedro — Portfólio 3D" },
+      { property: "og:description", content: "Explore os projetos de João Pedro em um portfólio 3D interativo conectado ao GitHub." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -106,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>

@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Fit the portfolio camera to panel extents and the available canvas aspect ratio, and derive orbit limits from that distance so controls cannot undo the fit on narrow screens.
