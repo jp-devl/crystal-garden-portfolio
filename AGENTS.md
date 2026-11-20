@@ -32,3 +32,5 @@ use the editor.
 - Fit the portfolio camera to panel extents and the available canvas aspect ratio, and derive orbit limits from that distance so controls cannot undo the fit on narrow screens.
 - CursorCamera owns native capture-phase wheel handling and interpolates raycast-anchored camera/target goals; keep OrbitControls for drag and touch so wheel zoom is never applied twice.
 - Use the dev-only window.__portfolioCamera.read() hook to verify live camera position, orbit target, distance and interpolation without accessing duplicate module state.
+- `/` is the editorial portfolio (content in src/data/profile.ts, JP emblem lazy-loaded behind ClientOnly); the GitHub repo panel scene lives at `/universo` so the home page stays SSR-friendly and fast.
+- Scroll reveals use the Reveal component (IntersectionObserver toggling data-shown both ways) plus CSS; no animation library, and prefers-reduced-motion disables them in styles.css.

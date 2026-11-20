@@ -19,7 +19,7 @@ export function PortfolioScene({ projects, selectedId, onSelect, onClear }: Port
       onPointerMissed={onClear}
       onCreated={({ gl }) => gl.domElement.parentElement?.setAttribute("data-scene-ready", "")}
     >
-      <color attach="background" args={["#0d1117"]} />
+      <color attach="background" args={["#2a1c17"]} />
       <ambientLight intensity={0.35} />
       <directionalLight
         position={[5, 8, 5]}
