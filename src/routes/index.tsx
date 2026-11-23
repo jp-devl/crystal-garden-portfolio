@@ -1,7 +1,7 @@
-import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { ArrowUpRight, Github, Mail, MapPin } from "lucide-react";
-import photo from "@/assets/joao-pedro.jpg.asset.json";
+
 import { Reveal } from "@/components/jp/Reveal";
 import { AREAS, EDUCATION, FEATURED, PROFILE } from "@/data/profile";
 
@@ -73,7 +73,7 @@ function Home() {
 
           <div className="relative z-20 mx-auto -mt-[14vw] flex w-full max-w-6xl flex-col items-center px-4 md:-mt-[11vw]">
             <div className="intro intro-2 photo-arch relative w-[68vw] max-w-[360px] overflow-hidden">
-              <img src={photo.url} alt="Fotografia de João Pedro ao pôr do sol" className="h-full w-full object-cover" />
+              <img src="/images/joao-pedro.jpg" alt="Fotografia de João Pedro ao pôr do sol" className="h-full w-full object-cover" />
             </div>
             <div className="intro intro-3 pointer-events-auto absolute -right-4 bottom-[-5rem] h-[220px] w-[220px] sm:right-0 md:bottom-auto md:-right-4 md:top-[-6rem] md:h-[440px] md:w-[440px] lg:right-4">
               <ClientOnly fallback={null}>
@@ -205,3 +205,4 @@ function Home() {
     </div>
   );
 }
+
