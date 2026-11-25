@@ -1,41 +1,98 @@
-# Crystal Garden Portfolio
+# João Pedro — Portfólio Profissional
 
-Crie uma aplicação de Portfólio 3D interativa moderna e elegante. 
+Portfólio pessoal com uma experiência editorial, responsiva e interativa para apresentar trajetória, formação, conhecimentos, projetos e contato profissional. A identidade visual combina tipografia editorial, paleta quente em tons de cobre e pôr do sol, superfícies claras e elementos 3D discretos.
 
-Para a interface visual e os elementos 3D, siga os seguintes requisitos técnicos:
-1. Instale e utilize a biblioteca Three.js junto com os conectores oficiais para React: `@react-three/fiber` e `@react-three/drei`.
-2. O fundo da aplicação deve ser escuro e elegante usando Tailwind CSS (`bg-[#0d1117]`).
-3. Crie um Canvas 3D que ocupe a tela inteira (ou uma seção de destaque). Adicione iluminação suave, sombras e controles de órbita (`<OrbitControls />` com damping ativado) para permitir que eu rotacione e interaja com a cena usando o mouse.
-4. Dentro da cena 3D, renderize dinamicamente uma coleção de objetos interativos (como esferas geométricas ou cristais do tipo `IcosahedronGeometry`). Cada objeto representará um projeto do meu GitHub.
-5. Crie uma lista estática (Mock Data) com 4 projetos de exemplo para servir de base:
-   - "Projeto-Python-Asimov" (Descrição: Automação criada nas aulas da Asimov Academy)
-   - "Meu-Portfolio-3D" (Descrição: Este portfólio incrível rodando no Lovable com Three.js)
-   - "Analise-de-Dados" (Descrição: Scripts de tratamento de dados e Machine Learning)
-   - "Bot-Telegram-Automation" (Descrição: Um bot automatizado integrado com APIs externas)
-6. Faça com que os cristais flutuem suavemente no espaço usando um hook `useFrame` para animar a rotação e a posição Y (seno).
-7. Implemente um sistema de clique (Raycasting) nos objetos 3D. Quando o usuário clicar em um cristal, exiba uma janela modal/card flutuante elegante na parte inferior usando componentes do Tailwind com efeito de vidro fosco (`backdrop-blur-md`). Esse card deve mostrar o nome do projeto selecionado, a descrição e um botão estilizado "Ver no GitHub".
+[Portfólio publicado](https://crystal-garden-portfolio.lovable.app) · [Repositório no GitHub](https://github.com/jp-devl/crystal-garden-portfolio)
 
-Escreva um código modularizado, limpo e em TypeScript.
+## Apresentação
 
-This project was built with [Lovable](https://lovable.dev).
+Sou João Pedro, desenvolvedor em formação, com base em informática e interesse em desenvolvimento de software, infraestrutura e Segurança da Informação. Este portfólio reúne minha trajetória, minhas formações e os projetos que representam meu caminho até aqui, em uma navegação pensada para ser clara, elegante e acessível.
 
-**Live app**: https://crystal-garden-portfolio.lovable.app
+## Sobre o projeto
 
-## Build with Lovable
+O projeto é um portfólio pessoal desenvolvido para apresentar:
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/df2f108f-3c0f-424e-811e-506348aec638).
+- trajetória e apresentação pessoal;
+- formação técnica e acadêmica;
+- conhecimentos e ferramentas utilizadas;
+- projetos em destaque;
+- áreas de atuação;
+- contato profissional.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+O conteúdo editorial fica concentrado em `src/data/profile.ts`, o que facilita atualizar textos, projetos e formações sem mexer na estrutura das seções.
 
-## Development
+## Tecnologias
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Tecnologias efetivamente presentes no código e no `package.json`:
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+| Camada | Tecnologias |
+| --- | --- |
+| Aplicação | React 19, TypeScript e Vite 8 |
+| Roteamento e dados | TanStack Start, TanStack Router e TanStack Query |
+| Estilização | Tailwind CSS 4 e CSS autoral |
+| Experiência 3D | Three.js, React Three Fiber e Drei |
+| Ícones e testes | Lucide React e Vitest |
+
+A aplicação consome também a API pública do GitHub para carregar os repositórios exibidos no Universo 3D.
+
+## Funcionalidades e experiência visual
+
+- Layout editorial e responsivo, com hierarquia tipográfica e espaçamento generoso.
+- Hero com retrato, identidade pessoal e emblema 3D carregado sob demanda.
+- Painel de apresentação com localização, indicadores derivados dos dados e frentes de atuação.
+- Timeline interativa da trajetória, com navegação por etapas e desenho progressivo.
+- Projetos em destaque com capas oficiais e faixa presa ao scroll no desktop.
+- Seção de conhecimentos com logotipos reais das ferramentas apresentadas.
+- Formação com as marcas institucionais oficiais do SENAI e da FASEC.
+- Universo 3D em `/universo`, com repositórios públicos do GitHub em uma cena interativa.
+- Contato com links profissionais e mapa incorporado da região de Palmas, Tocantins.
+- Revelações progressivas discretas com `IntersectionObserver` e respeito a `prefers-reduced-motion`.
+
+## Como executar localmente
+
+Pré-requisitos: Node.js e npm.
+
+```bash
+git clone https://github.com/jp-devl/crystal-garden-portfolio.git
+cd crystal-garden-portfolio
+npm install
 npm run dev
 ```
+
+O Vite exibirá a URL local no terminal. Para gerar a versão de produção:
+
+```bash
+npm run build
+```
+
+Outros scripts disponíveis: `npm test`, `npm run lint` e `npm run format`.
+
+## Estrutura do projeto
+
+```text
+src/
+  routes/
+    index.tsx              # página editorial principal
+    universo.tsx           # rota do Universo 3D
+    __root.tsx             # layout raiz, metadados e providers
+  components/
+    jp/                    # hero, painel pessoal, timeline, conhecimentos e formação
+    portfolio/             # cena 3D, câmera, cristais e cards dos repositórios
+    ui/                    # componentes de interface reutilizáveis
+  data/
+    profile.ts             # conteúdo editorial, projetos e formação
+    projects.ts            # acesso aos repositórios públicos do GitHub
+  styles.css               # sistema visual editorial e responsivo
+public/
+  images/
+    joao-pedro.jpg
+    institutions/          # marcas SENAI e FASEC
+    logos/                 # logotipos das tecnologias
+    projects/              # capas dos projetos em destaque
+```
+
+## Acesso
+
+- Repositório: https://github.com/jp-devl/crystal-garden-portfolio
+- Portfólio publicado: https://crystal-garden-portfolio.lovable.app
+- Universo 3D: https://crystal-garden-portfolio.lovable.app/universo

@@ -1,19 +1,24 @@
-﻿import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
+import { createFileRoute, Link, ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { ArrowUpRight, Github, Mail, MapPin } from "lucide-react";
 
+import { FormationSection } from "@/components/jp/FormationSection";
+import { KnowledgeSection } from "@/components/jp/KnowledgeSection";
+import { PersonalPanel } from "@/components/jp/PersonalPanel";
 import { Reveal } from "@/components/jp/Reveal";
-import { AREAS, EDUCATION, FEATURED, PROFILE } from "@/data/profile";
+import { TrajectoryTimeline } from "@/components/jp/TrajectoryTimeline";
+import { useScrollExperience } from "@/components/jp/useScrollExperience";
+import { FEATURED, PROFILE } from "@/data/profile";
 
 const JPEmblem = lazy(() => import("@/components/jp/JPEmblem"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "João Pedro — JP Digital Universe" },
+      { title: "João Pedro — Portfólio Profissional" },
       { name: "description", content: "Portfólio de João Pedro: desenvolvimento de software, tecnologia, infraestrutura e Segurança da Informação. Palmas, Tocantins." },
-      { property: "og:title", content: "João Pedro — JP Digital Universe" },
-      { property: "og:description", content: "Desenvolvimento de software, infraestrutura e Segurança da Informação. Conheça os projetos NextTI e DocFly." },
+      { property: "og:title", content: "João Pedro — Portfólio Profissional" },
+      { property: "og:description", content: "Desenvolvimento de software, infraestrutura e Segurança da Informação. Conheça os projetos Calculator e Lista de Tarefas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -40,38 +45,61 @@ function useReducedMotion() {
 
 function SectionLabel({ n, children }: { n: string; children: string }) {
   return (
-    <Reveal className="mb-10 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-sand">
-      <span className="text-sunset">{n}</span><span className="h-px w-12 bg-sand/40" />{children}
+    <Reveal className="chapter-head mb-10 flex items-center gap-4 font-mono text-xs uppercase tracking-[0.3em] text-sand">
+      <span className="chapter-index">{n}</span>
+      <span className="chapter-rule" aria-hidden />
+      <span className="chapter-name">{children}</span>
+      <span className="chapter-note">{PROFILE.brand}</span>
     </Reveal>
   );
 }
 
 function Home() {
   const reduced = useReducedMotion();
+  useScrollExperience(reduced);
+
   return (
     <div className="relative overflow-x-clip bg-background text-foreground">
       <div className="grain pointer-events-none fixed inset-0 z-50" aria-hidden />
+      <div className="pointer-aura" aria-hidden />
+      <div className="scroll-progress" aria-hidden><span /></div>
 
-      <nav className="fixed inset-x-0 top-4 z-40 flex justify-center px-3">
-        <ul className="nav-pill flex max-w-full items-center gap-1 overflow-x-auto rounded-full px-2 py-1.5 text-xs sm:text-sm">
-          <li className="hidden px-3 font-display font-bold tracking-tight text-sunset sm:block">JP</li>
-          {NAV.map(([href, label]) => (
-            <li key={href}><a href={href} className="nav-link block whitespace-nowrap rounded-full px-3 py-1.5">{label}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div className="chapter-rail" aria-hidden>
+        {NAV.map(([href, label], i) => (
+          <span key={href} className="rail-step" data-rail={href.slice(1)}>
+            <span className="rail-dot" />
+            <span className="rail-label">{String(i + 1).padStart(2, "0")} {label}</span>
+          </span>
+        ))}
+      </div>
+
+      <header className="site-header">
+        <a href="#inicio" className="site-logo" aria-label="João Pedro — Portfólio Profissional — início">
+          <span className="site-logo-mark">JP</span>
+          <span className="site-logo-text"><span>{PROFILE.name}</span><small>{PROFILE.brand}</small></span>
+        </a>
+        <nav className="site-nav" aria-label="Navegação principal">
+          <ul className="site-nav-list">
+            {NAV.map(([href, label]) => (
+              <li key={href}><a href={href} className="site-nav-link" data-nav>{label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </header>
 
       <main>
         {/* HERO */}
-        <section id="inicio" className="hero-bg relative min-h-dvh overflow-hidden pt-24">
+        <section id="inicio" data-chapter="inicio" data-scroll-track className="hero-bg relative min-h-dvh overflow-hidden pt-24">
           <div className="sun-glow" aria-hidden />
-          <h1 className="intro relative z-10 select-none px-4 text-center font-display font-extrabold uppercase leading-[0.82] tracking-tighter text-foreground"
-            style={{ fontSize: "clamp(3.4rem, 15vw, 15rem)" }}>
-            <span className="block">João</span>
-            <span className="text-outline block">Pedro</span>
+          <h1
+            className="hero-name intro relative z-30 select-none px-4 text-center"
+            style={{ fontSize: "clamp(3.4rem, 15vw, 15rem)" }}
+          >
+            <span className="hero-name-main block">João</span>
+            <span className="hero-name-script block">Pedro</span>
           </h1>
 
-          <div className="relative z-20 mx-auto -mt-[14vw] flex w-full max-w-6xl flex-col items-center px-4 md:-mt-[11vw]">
+          <div className="relative z-20 mx-auto mt-4 flex w-full max-w-6xl flex-col items-center px-4 md:mt-6">
             <div className="intro intro-2 photo-arch relative w-[68vw] max-w-[360px] overflow-hidden">
               <img src="/images/joao-pedro.jpg" alt="Fotografia de João Pedro ao pôr do sol" className="h-full w-full object-cover" />
             </div>
@@ -98,105 +126,180 @@ function Home() {
           <span className="float-tag float-delay right-[8%] top-[30%] hidden lg:block">infra · suporte</span>
           <span className="float-tag left-[12%] bottom-[22%] hidden lg:block">sec_ops</span>
         </section>
-
         {/* SOBRE */}
-        <section id="sobre" className="section-warm relative px-6 py-28 md:py-40">
-          <div className="mx-auto max-w-6xl">
+        <section id="sobre" data-chapter="sobre" data-scroll-track className="section-warm relative overflow-clip px-6 py-28 md:py-36">
+          <div className="pointer-events-none absolute -left-40 top-40 h-[28rem] w-[28rem] rounded-full bg-sunset/10 blur-[130px]" aria-hidden />
+
+          <div className="relative mx-auto max-w-6xl">
             <SectionLabel n="01">Sobre mim</SectionLabel>
-            <div className="grid gap-12 md:grid-cols-[1.4fr_1fr]">
-              <Reveal as="h2" className="font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
-                Do suporte técnico à criação de <em className="font-serif-it text-sunset">soluções digitais</em>.
+
+            <PersonalPanel />
+
+            <div className="timeline-block mt-28">
+              <Reveal>
+                <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <span className="font-mono text-xs tracking-[0.3em] text-sunset">MINHA TRAJETÓRIA</span>
+                    <h3 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-4xl">Aprendizado em movimento.</h3>
+                  </div>
+                </div>
               </Reveal>
-              <div className="space-y-6 text-muted-foreground md:pt-4">
-                <Reveal delay={100}><p>Minha trajetória na tecnologia começou na formação técnica em informática, onde aprendi os fundamentos de sistemas, redes e computadores.</p></Reveal>
-                <Reveal delay={200}><p>As experiências com suporte e manutenção me ensinaram a entender problemas a partir de quem usa a tecnologia — e despertaram meu interesse em desenvolver soluções que facilitem o dia a dia das pessoas.</p></Reveal>
-                <Reveal delay={300}><p className="text-foreground">Hoje sigo esse caminho na graduação, unindo desenvolvimento, infraestrutura e Segurança da Informação.</p></Reveal>
-              </div>
+
+              <TrajectoryTimeline reduced={reduced} />
             </div>
           </div>
         </section>
 
         {/* CONHECIMENTOS */}
-        <section id="conhecimentos" className="relative px-6 py-28 md:py-40">
-          <div className="mx-auto max-w-6xl">
-            <SectionLabel n="02">Conhecimentos</SectionLabel>
-            <div className="border-t border-sand/20">
-              {AREAS.map((a, i) => (
-                <Reveal key={a.n} delay={i * 120} className="area-row group grid gap-4 border-b border-sand/20 py-10 md:grid-cols-[6rem_1.2fr_1fr] md:items-center">
-                  <span className="font-mono text-sm text-sunset">{a.n}</span>
-                  <h3 className="font-display text-3xl font-bold tracking-tight transition-transform duration-500 group-hover:translate-x-3 md:text-5xl">{a.title}</h3>
-                  <p className="text-muted-foreground">{a.text}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        <KnowledgeSection />
 
         {/* PROJETOS */}
-        <section id="projetos" className="section-warm relative px-6 py-28 md:py-40">
-          <div className="mx-auto max-w-6xl">
-            <SectionLabel n="03">Projetos</SectionLabel>
-            <div className="space-y-10">
-              {FEATURED.map((p, i) => (
-                <Reveal key={p.name} delay={80}>
-                  <article className="project-card group relative overflow-hidden rounded-[2rem] p-8 md:p-14">
-                    <span className="pointer-events-none absolute -right-4 -top-10 font-display text-[10rem] font-extrabold leading-none text-sunset/10 md:text-[16rem]" aria-hidden>0{i + 1}</span>
-                    <div className="relative grid gap-10 md:grid-cols-[1.3fr_1fr]">
-                      <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.3em] text-sunset">{p.tag}</p>
-                        <h3 className="mt-4 font-display text-5xl font-extrabold tracking-tight md:text-7xl">{p.name}</h3>
-                        <p className="mt-6 max-w-lg text-muted-foreground">{p.description}</p>
-                      </div>
-                      <div className="flex flex-col justify-between gap-8">
-                        <div>
-                          <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.25em] text-steel">Tecnologias</p>
-                          <ul className="flex flex-wrap gap-2">
-                            {p.stack.map((s) => <li key={s} className="rounded-full border border-sand/30 px-3 py-1 text-sm">{s}</li>)}
-                          </ul>
+        <section id="projetos" data-chapter="projetos" data-scroll-track data-horizontal className="projects-section section-warm relative overflow-clip">
+          <div className="projects-pin">
+            <div className="projects-head mx-auto w-full max-w-6xl px-6">
+              <SectionLabel n="03">Projetos</SectionLabel>
+              <p className="projects-intro max-w-xl font-serif-it text-xl text-sand md:text-2xl">
+                Cada projeto é uma janela para um problema que virou sistema.
+              </p>
+            </div>
+
+            <div className="projects-viewport" data-horizontal-viewport>
+              <div className="projects-track" data-horizontal-track>
+                {FEATURED.map((p, i) => {
+                  const coverSrc = p.cover;
+                  const demoHref = p.demo;
+                  return (
+                    <Reveal key={p.name} delay={70 + i * 90} className="project-slot">
+                      <article className={`project-panel group relative overflow-hidden rounded-[2rem] p-8 md:p-12${coverSrc ? " project-panel-cover" : ""}`} data-project-panel data-title={p.name}>
+                        {coverSrc && (
+                          <div className="project-cover-frame">
+                            <img
+                              src={coverSrc}
+                              srcSet={p.coverSmall ? `${p.coverSmall} 1000w, ${coverSrc} 1600w` : undefined}
+                              sizes="(max-width: 1023px) 100vw, 74vw"
+                              alt={p.coverAlt ?? `Capa do projeto ${p.name}`}
+                              width={1600}
+                              height={640}
+                              loading={i === 0 ? "eager" : "lazy"}
+                              decoding="async"
+                              className="project-cover-image"
+                            />
+                            <span className="project-cover-shade" aria-hidden="true" />
+                          </div>
+                        )}
+                        <span className="project-ghost pointer-events-none absolute -right-6 -top-12 font-display text-[10rem] font-extrabold leading-none text-sunset/10 md:text-[15rem]" aria-hidden>{String(i + 1).padStart(2, "0")}</span>
+                        <div className="project-panel-inner relative z-10 flex h-full flex-col justify-between gap-10">
+                          <div>
+                            <div className="project-panel-kicker flex flex-wrap items-center gap-3">
+                              <p className="font-mono text-xs uppercase tracking-[0.3em] text-sunset">{p.tag}</p>
+                              {coverSrc && <span className="project-cover-badge">Capa oficial do README</span>}
+                            </div>
+                            <h3 className="project-panel-title mt-4 font-display text-5xl font-extrabold tracking-tight md:text-7xl">{p.name}</h3>
+                            <p className="project-panel-copy mt-6 max-w-lg text-muted-foreground">{p.description}</p>
+                          </div>
+                          <div className="space-y-6">
+                            <div className="project-panel-stack">
+                              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.25em] text-steel">Tecnologias</p>
+                              <ul className="flex flex-wrap gap-2">
+                                {p.stack.map((s) => <li key={s} className="rounded-full border border-sand/30 px-3 py-1 text-sm">{s}</li>)}
+                              </ul>
+                            </div>
+                            <div className="project-panel-actions flex flex-wrap items-center gap-3">
+                              <a href={p.url} target="_blank" rel="noreferrer" className="btn-sun self-start">
+                                <Github className="h-4 w-4" /> Ver repositório <ArrowUpRight className="h-4 w-4" />
+                              </a>
+                              {demoHref && (
+                                <a href={demoHref} target="_blank" rel="noreferrer" className="btn-ghost self-start">
+                                  Ver demonstração <ArrowUpRight className="h-4 w-4" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <a href={p.url} target="_blank" rel="noreferrer" className="btn-sun self-start">
-                          <Github className="h-4 w-4" /> Ver repositório <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                        </a>
+                        {!coverSrc && p.mark && (
+                          <div className="project-mark-frame">
+                            <img
+                              src={p.mark}
+                              alt={p.markAlt ?? `Marca do projeto ${p.name}`}
+                              width={900}
+                              height={301}
+                              loading="lazy"
+                              decoding="async"
+                              className="project-mark-image"
+                            />
+                          </div>
+                        )}
+                      </article>
+                    </Reveal>
+                  );
+                })}
+
+                <Reveal delay={70 + FEATURED.length * 90} className="project-slot">
+                  <article className="project-panel project-panel-end group relative overflow-hidden rounded-[2rem] p-8 md:p-12" data-project-panel data-title="Universo 3D">
+                    <span className="project-ghost pointer-events-none absolute -right-4 -top-12 font-display text-[10rem] font-extrabold leading-none text-sunset/10 md:text-[15rem]" aria-hidden>↗</span>
+                    <div className="project-panel-inner relative flex h-full flex-col justify-between gap-10">
+                      <div>
+                        <p className="project-panel-kicker font-mono text-xs uppercase tracking-[0.3em] text-sunset">Além dos destaques</p>
+                        <h3 className="project-panel-title mt-4 font-display text-5xl font-extrabold tracking-tight md:text-7xl">Universo 3D</h3>
+                        <p className="project-panel-copy mt-6 max-w-lg text-muted-foreground">Quer ver todos os repositórios públicos em uma cena interativa?</p>
+                      </div>
+                      <div className="project-panel-actions">
+                        <Link to="/universo" className="btn-ghost self-start">Abrir o Universo 3D <ArrowUpRight className="h-4 w-4" /></Link>
                       </div>
                     </div>
                   </article>
                 </Reveal>
-              ))}
+              </div>
             </div>
-            <Reveal className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-sand/20 pt-8">
-              <p className="text-muted-foreground">Quer ver todos os repositórios públicos em uma cena 3D?</p>
-              <Link to="/universo" className="btn-ghost">Abrir o Universo 3D <ArrowUpRight className="h-4 w-4" /></Link>
-            </Reveal>
+
+            <div className="projects-footer mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 pb-10">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-sand">Faixa de projetos · {String(FEATURED.length).padStart(2, "0")} destaques</p>
+              <p className="projects-caption font-display text-lg font-semibold" data-project-caption aria-live="polite">{FEATURED[0]?.name}</p>
+            </div>
           </div>
         </section>
 
         {/* FORMAÇÃO */}
-        <section id="formacao" className="relative px-6 py-28 md:py-40">
-          <div className="mx-auto max-w-6xl">
-            <SectionLabel n="04">Formação</SectionLabel>
-            <div className="grid gap-px overflow-hidden rounded-[2rem] bg-sand/20 md:grid-cols-2">
-              {EDUCATION.map((e, i) => (
-                <Reveal key={e.place} delay={i * 150} className="bg-background p-10 md:p-14">
-                  <p className="font-mono text-xs uppercase tracking-[0.3em] text-steel">{e.title}</p>
-                  <p className="mt-4 font-display text-3xl font-bold tracking-tight md:text-4xl">{e.place}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FormationSection />
 
         {/* CONTATO */}
-        <section id="contato" className="contact-bg relative overflow-hidden px-6 py-28 md:py-40">
+        <section id="contato" data-chapter="contato" data-scroll-track className="contact-bg relative overflow-hidden px-6 py-28 md:py-40">
           <div className="sun-glow sun-glow-low" aria-hidden />
+          <div className="contact-orbit" aria-hidden><span /><span /><span /></div>
           <div className="relative mx-auto max-w-6xl">
             <SectionLabel n="05">Contato</SectionLabel>
-            <Reveal as="h2" className="font-display font-extrabold uppercase leading-[0.9] tracking-tighter" >
-              <span style={{ fontSize: "clamp(3rem, 10vw, 9rem)" }}>Vamos <span className="font-serif-it normal-case text-sunset">conversar</span>?</span>
+            <Reveal as="h2" className="contact-title font-display font-extrabold uppercase leading-[0.9] tracking-tighter">
+              <span className="line contact-title-line">
+                <span>Vamos <span className="font-serif-it normal-case text-sunset">conversar</span>?</span>
+              </span>
             </Reveal>
-            <div className="mt-14 grid gap-6 md:grid-cols-3">
-              <Reveal delay={0}><a href={`mailto:${PROFILE.email}`} className="contact-link"><Mail className="h-5 w-5 text-sunset" /><span className="break-all">{PROFILE.email}</span></a></Reveal>
-              <Reveal delay={120}><a href={PROFILE.github} target="_blank" rel="noreferrer" className="contact-link"><Github className="h-5 w-5 text-sunset" />github.com/jp-devl</a></Reveal>
-              <Reveal delay={240}><p className="contact-link"><MapPin className="h-5 w-5 text-sunset" />{PROFILE.location}</p></Reveal>
+            <div className="contact-layout mt-14 grid gap-12 md:grid-cols-2 md:gap-14">
+              <div className="min-w-0">
+                <div className="grid gap-6">
+                  <Reveal delay={0}><a href={`mailto:${PROFILE.email}`} className="contact-link"><Mail className="h-5 w-5 text-sunset" /><span className="break-all">{PROFILE.email}</span></a></Reveal>
+                  <Reveal delay={120}><a href={PROFILE.github} target="_blank" rel="noreferrer" className="contact-link"><Github className="h-5 w-5 text-sunset" />github.com/jp-devl</a></Reveal>
+                  <Reveal delay={240}><p className="contact-link"><MapPin className="h-5 w-5 text-sunset" />{PROFILE.location}</p></Reveal>
+                </div>
+              </div>
+              <Reveal delay={300} className="min-w-0">
+                <div className="contact-map-frame">
+                  <iframe
+                    className="contact-map-iframe"
+                    title="Mapa da região de Palmas, Tocantins — Brasil"
+                    src="https://www.google.com/maps?q=Palmas%2C%20Tocantins%2C%20Brasil&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                  <span className="contact-map-badge" aria-hidden="true">JP · TO</span>
+                </div>
+                <div className="contact-map-caption">
+                  <span>{PROFILE.location}</span>
+                  <a href="https://www.google.com/maps/search/?api=1&query=Palmas%2C%20Tocantins%2C%20Brasil" target="_blank" rel="noreferrer" aria-label="Abrir Palmas, Tocantins — Brasil no Google Maps">
+                    Abrir no Google Maps <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                </div>
+              </Reveal>
             </div>
             <p className="mt-24 font-mono text-xs uppercase tracking-[0.3em] text-sand">© {PROFILE.brand} — {PROFILE.fullName}</p>
           </div>

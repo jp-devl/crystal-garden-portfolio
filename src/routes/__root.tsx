@@ -81,10 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "João Pedro — JP Digital Universe" },
+      { title: "João Pedro — Portfólio Profissional" },
       { name: "description", content: "Explore os projetos de João Pedro em um portfólio 3D interativo conectado ao GitHub." },
       { name: "author", content: "João Pedro Moreira Martins de Sousa" },
-      { property: "og:title", content: "João Pedro — JP Digital Universe" },
+      { property: "og:title", content: "João Pedro — Portfólio Profissional" },
       { property: "og:description", content: "Explore os projetos de João Pedro em um portfólio 3D interativo conectado ao GitHub." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
